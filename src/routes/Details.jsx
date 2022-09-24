@@ -3,10 +3,12 @@ import React, { useState, useEffect } from 'react'
 import { Grid, Container, Typography, Box, CircularProgress } from '@mui/material'
 
 import { useLocation } from 'react-router-dom'
+import HiveChart from '../components/HiveChart';
 
 export default function Details() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
+  // const [dataToChart, setDataToChart] = useState([]);
 
   const location = useLocation();
   const { hiveId } = location.state;
@@ -15,7 +17,7 @@ export default function Details() {
 
 
   useEffect(function () {
-    const getHiveHistory = async() => {
+    const getHiveHistory = async () => {
       //fetch("/api/hives")
       //console.log('Updating...')
       fetch(url)
@@ -37,25 +39,36 @@ export default function Details() {
 
   useEffect(function () {
     console.log(items);
-  },[items]);
+  }, [items]);
 
 
-  if (!isLoaded || items.length===0) {
+  if (!isLoaded || items.length === 0) {
     return (
-      <Grid container justify="center" alignItems='center' direction="column">
-        <Box component="span">
-          <CircularProgress size={80} />
-          <Typography>Ładowanie...</Typography>
-        </Box>
-      </Grid>
+      <Container sx={{ marginTop: '2.7rem' }}>
+        <Grid container justify="center" alignItems='center' direction="column">
+          <Box component="span">
+            <CircularProgress size={80} />
+            <Typography>Ładowanie...</Typography>
+          </Box>
+        </Grid>
+      </Container>
     )
   } else {
     return (
-      <Container sx={{marginTop:'2.7rem'}}>
-        <Grid container spacing={3}>
-          {items[0].mother}
-        </Grid>
-      </Container>
+      <>
+        <Container sx={{ marginTop: '2.7rem' }}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={3} md={3} lg={3}>
+              <HiveChart />
+            </Grid>
+            <Grid item xs={12} sm={3} md={3} lg={3}>
+              Bede
+            </Grid>
+          </Grid>
+        </Box>
+        </Container>
+      </>
     )
   }
 }
