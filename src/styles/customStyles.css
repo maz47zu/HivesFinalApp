@@ -1,0 +1,63 @@
+.container {
+    max-width: 95%;
+    margin-right: auto;
+    margin-left: auto;
+    padding: .1rem;
+    /* background-color: rgba(215, 248, 250,0.15); */
+    
+  }
+
+#sensors {
+  flex-direction: column;
+	max-width: 1500px;
+	margin: 0 auto;
+	padding: 0px 0;
+}
+
+#sensors .section-tittle {
+  font-size: .9rem;
+  text-align: center;
+  margin-top: 0px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+#sensors .underline {
+    height: 2.9rem;
+    border-bottom: 2px solid black;
+    margin-bottom: 20px;
+}
+
+#sensors .chart-card {
+    flex-direction: column-reverse;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 20px;
+}
+
+#sensors .col-left{
+  width: 70%;
+  height: 200px;
+  background-color: aqua;
+}
+
+#sensors .col-right{
+  width:30%;
+  background-color: aquamarine;
+}
+
+#sensors .chart-tittle {
+  text-align: center;
+  text-transform: uppercase;
+}
+#sensors .chart-tittle h2{
+  font-size: .9rem !important;
+  text-align: center;
+  margin-top: 0px;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+#sensors .daterange{
+  width: 50%;
+  text-align: center;
+}

@@ -5,11 +5,16 @@ import { Grid, Container, Typography, Box, CircularProgress } from '@mui/materia
 import { useLocation } from 'react-router-dom'
 import HiveChart from '../components/HiveChart';
 
+import '../styles/dateRange.css'
+import '../styles/customStyles.css'
+
+import { DateRangePicker } from 'rsuite';
+
 export default function Details() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
   // const [dataToChart, setDataToChart] = useState([]);
-
+  const [dateRange, setDateRange] = useState([new Date('2022-08-18 00:00:00'), new Date('2022-08-26 00:00:00')]);
   const location = useLocation();
   const { hiveId } = location.state;
 
@@ -38,7 +43,7 @@ export default function Details() {
   }, [setItems])
 
   useEffect(function () {
-    console.log(items);
+    //console.log(items);
   }, [items]);
 
 
@@ -55,20 +60,42 @@ export default function Details() {
     )
   } else {
     return (
-      <>
-        <Container sx={{ marginTop: '2.7rem' }}>
-        <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={3} md={3} lg={3}>
-              <HiveChart />
+      <div className="container">
+        <section id='sensors'>
+          <div className="section-tittle underline">
+            <h2>Szczególy ula nr {hiveId}</h2>
+          </div>
+          <div>
+            <Grid container spacing={2} direction="column" alignItems="center" sx={{marginTop:'5px', marginBottom:'10px'}}>
+              <DateRangePicker
+                format="yyyy-MM-dd HH:mm:ss"
+                defaultValue={[new Date('2022-08-18 00:00:00'), new Date('2022-08-26 00:00:00')]}
+                defaultCalendarValue={[new Date('2022-08-01 00:00:00'), new Date('2022-09-01 23:59:59')]}
+                onChange={(range) => setDateRange(range)}
+              />
             </Grid>
-            <Grid item xs={12} sm={3} md={3} lg={3}>
-              Bede
+          </div>
+          <div className="chart-tittle">
+            <h2>Temperatura i wilgotność</h2>
+          </div>
+          <div>
+            <HiveChart />
+          </div>
+          <div className="chart-tittle">
+            <h2>Waga</h2>
+          </div>
+          <div>
+            <HiveChart />
+          </div>
+          {/* <Box sx={{ flexGrow: 1}}>
+            <Grid container spacing={2} direction="column" alignItems="center">
+              <Grid item xs={12} sm={12} md={12} lg={12}>
+                <HiveChart/>
+              </Grid>
             </Grid>
-          </Grid>
-        </Box>
-        </Container>
-      </>
+          </Box> */}
+        </section >
+      </div >
     )
   }
 }
