@@ -28,13 +28,9 @@ export default function LandingPage() {
             )
     };
 
-    useEffect(function () {
-        getHivesData();
-    }, [])
-
     useEffect(() => {
+        getHivesData();
         const interval = setInterval(() => {
-            console.log("bede")
             getHivesData();
         }, 10*1000);
         return () => clearInterval(interval);
@@ -56,9 +52,8 @@ export default function LandingPage() {
         return (
             <Container>
                 <Grid container spacing={3}>
-                    {items.map(item => (
-                        <Grid item xs={12} sm={12} md={6} lg={4}>
-                            {/* <InfoCard hives={item}/> */}
+                    {items.map((item,i) => (
+                        <Grid value={item} key={i} item xs={12} sm={12} md={6} lg={4}>
                             <HiveInfo hives={item} />
                         </Grid>
                     ))}

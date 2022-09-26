@@ -43,8 +43,8 @@ export default function Details() {
   }, [setItems])
 
   useEffect(function () {
-    //console.log(items);
-  }, [items]);
+    console.log(dateRange);
+  }, [dateRange]);
 
 
   if (!isLoaded || items.length === 0) {
@@ -68,6 +68,7 @@ export default function Details() {
           <div>
             <Grid container spacing={2} direction="column" alignItems="center" sx={{marginTop:'5px', marginBottom:'10px'}}>
               <DateRangePicker
+                showOneCalendar
                 format="yyyy-MM-dd HH:mm:ss"
                 defaultValue={[new Date('2022-08-18 00:00:00'), new Date('2022-08-26 00:00:00')]}
                 defaultCalendarValue={[new Date('2022-08-01 00:00:00'), new Date('2022-09-01 23:59:59')]}
