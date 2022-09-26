@@ -1,15 +1,36 @@
 import { useState } from "react";
 import "../styles/navbar.css";
 import { Link } from "react-router-dom";
+import { Typography } from "@mui/material";
 
+
+const brandName = {
+    color:'black',
+    fontWeight: 800, 
+    marginLeft:'2rem', 
+    fontSize:'1.8rem',
+    marginTop:'.01rem',
+}
+
+const navElement = {
+    display:'column',
+    alignItems:'center', 
+    marginTop:'10px', 
+    fontWeight:'600',
+    border:'solid',
+    borderWidth:'1px',
+    borderRadius:'5px',
+    padding:'5px 5px'
+}
 export default function Navbar() {
     const [isNavExpanded, setIsNavExpanded] = useState(false);
 
     return (
         <nav className="navigation">
-            <a href="/" className="brand-name">
+            <Typography sx={brandName}>
                 HivesAPP
-            </a>
+            </Typography>
+
             <button
                 className="hamburger"
                 onClick={() => {
@@ -37,10 +58,18 @@ export default function Navbar() {
             >
                 <ul>
                     <li>
-                        <Link to="/">Home</Link>
+                        <Link to="/">
+                            <Typography sx={navElement}>
+                                Pasieka
+                            </Typography>
+                        </Link>
                     </li>
                     <li>
-                        <Link to="/settings">Settings</Link>
+                        <Link to="/settings">
+                            <Typography sx={navElement}>
+                                Ustawienia
+                            </Typography>
+                        </Link>
                     </li>
                     {/* <li>
             <a href="/info">Info</a>

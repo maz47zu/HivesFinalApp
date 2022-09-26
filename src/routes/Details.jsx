@@ -10,6 +10,8 @@ import '../styles/customStyles.css'
 
 import { DateRangePicker } from 'rsuite';
 
+import moment from 'moment';
+
 export default function Details() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
@@ -42,8 +44,24 @@ export default function Details() {
     // eslint-disable-next-line
   }, [setItems])
 
+  async function filterData (){
+    const startDate = dateRange[0] ? moment(dateRange[0]) : moment().startOf('day');
+    const endDate = dateRange[1] ? moment(dateRange[1]) : moment().endOf('day');
+
+    const result = items.filter(a => {
+      const date = new Date(a.datewhen);
+      console.log(date);
+      console.log(date >= startDate && date <= endDate);
+      return (date >= startDate && date <= endDate);
+    })
+    //
+  }
+
   useEffect(function () {
-    console.log(dateRange);
+    const getData = async() => {
+      console.log(await filterData());
+    }
+    getData();
   }, [dateRange]);
 
 
@@ -62,18 +80,28 @@ export default function Details() {
     return (
       <div className="container">
         <section id='sensors'>
-          <div className="section-tittle underline">
+          <Typography sx={{ textTransform: 'uppercase', textAlign: 'center', marginTop: '.6rem', fontSize: '1.7rem', fontWeight: '600', color: 'black' }}>
+            Ul numer: {hiveId}
+          </Typography>
+
+          {/* <div className="section-tittle underline">
             <h2>Szczególy ula nr {hiveId}</h2>
-          </div>
+          </div> */}
           <div>
-            <Grid container spacing={2} direction="column" alignItems="center" sx={{marginTop:'5px', marginBottom:'10px'}}>
-              <DateRangePicker
-                showOneCalendar
-                format="yyyy-MM-dd HH:mm:ss"
-                defaultValue={[new Date('2022-08-18 00:00:00'), new Date('2022-08-26 00:00:00')]}
-                defaultCalendarValue={[new Date('2022-08-01 00:00:00'), new Date('2022-09-01 23:59:59')]}
-                onChange={(range) => setDateRange(range)}
-              />
+            <Grid container spacing={2} direction="column" alignItems="center" sx={{ marginTop: '5px', marginBottom: '10px' }}>
+
+                <Typography sx={{ textTransform: 'uppercase', textAlign: 'center', marginTop: '.5rem', fontSize: '1.0rem', fontWeight: '400', color: 'black' }}>
+                  Wybierz przedział czasu 
+                  <DateRangePicker
+                  showOneCalendar
+                  format="yyyy-MM-dd HH:mm:ss"
+                  defaultValue={[new Date('2022-08-18 00:00:00'), new Date('2022-08-26 00:00:00')]}
+                  defaultCalendarValue={[new Date('2022-08-01 00:00:00'), new Date('2022-09-01 23:59:59')]}
+                  onChange={(range) => setDateRange(range)}
+                />
+                </Typography>
+
+
             </Grid>
           </div>
           <div className="chart-tittle">
