@@ -72,7 +72,7 @@ export default function InfoCard(props) {
                 </List>
                 <Box sx={{ pt: 1, pb: -0 }}>
                     <Link to='/details' state={{ hiveId: hiveId }} style={{ textDecoration: 'none' }}>
-                        <Button variant="outlined" fullWidth="true" size="small" style={{
+                        <Button variant="outlined" fullWidth={true} size="small" style={{
                             borderRadius: 10,
                             borderColor: 'gray',
                             color: 'black',
