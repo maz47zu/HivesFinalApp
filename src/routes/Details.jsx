@@ -11,12 +11,14 @@ import '../styles/customStyles.css'
 import { DateRangePicker } from 'rsuite';
 
 import moment from 'moment';
+import WeightChart from '../components/WeightChart';
 
 export default function Details() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
-  // const [dataToChart, setDataToChart] = useState([]);
-  const [dateRange, setDateRange] = useState([new Date('2022-08-18 00:00:00'), new Date('2022-08-26 00:00:00')]);
+  const [dataToChart, setDataToChart] = useState([]);
+  const [weightChart, setWeightChart] = useState([]);
+  const [dateRange, setDateRange] = useState([new Date(moment().startOf('month').format('YYYY-MM-DD hh:mm')), new Date((moment().endOf('month').format('YYYY-MM-DD hh:mm')))]);
   const location = useLocation();
   const { hiveId } = location.state;
 
@@ -25,10 +27,7 @@ export default function Details() {
 
   useEffect(function () {
     const getHiveHistory = async () => {
-      //fetch("/api/hives")
-      //console.log('Updating...')
       fetch(url)
-        //uncomment on localhost 
         .then(res => res.json())
         .then(
           (result) => {
@@ -45,25 +44,51 @@ export default function Details() {
   }, [setItems])
 
   async function filterData (){
-    const startDate = dateRange[0] ? moment(dateRange[0]) : moment().startOf('day');
-    const endDate = dateRange[1] ? moment(dateRange[1]) : moment().endOf('day');
+    const startDate = dateRange[0] ? moment(dateRange[0]) : (moment().startOf('month').format('YYYY-MM-DD hh:mm'));
+    const endDate = dateRange[1] ? moment(dateRange[1]) : (moment().endOf('month').format('YYYY-MM-DD hh:mm'));
+    let result = [];
+    for(const i in items){
+      const singlePoint = {
+        "name":'',
+        'Temp':'',
+        'Wilg':''
+      };
+      if(moment(items[i].datewhen)<=endDate && moment(items[i].datewhen)>=startDate){
+        singlePoint.name = items[i].datewhen;
+        singlePoint.Temp = items[i].temperature;
+        singlePoint.Wilg = items[i].humidity;
+        result.push(singlePoint);
+      }
+    }
+    return result;
+  }
 
-    const result = items.filter(a => {
-      const date = new Date(a.datewhen);
-      console.log(date);
-      console.log(date >= startDate && date <= endDate);
-      return (date >= startDate && date <= endDate);
-    })
-    //
+  async function filterWeightData (){
+    const startDate = dateRange[0] ? moment(dateRange[0]) : (moment().startOf('month').format('YYYY-MM-DD hh:mm'));
+    const endDate = dateRange[1] ? moment(dateRange[1]) : moment().endOf('month').format('YYYY-MM-DD hh:mm');
+    let result = [];
+    for(const i in items){
+      const singlePoint = {
+        "name":'',
+        'Waga':''
+      };
+      if(moment(items[i].datewhen)<=endDate && moment(items[i].datewhen)>=startDate){
+        singlePoint.name = items[i].datewhen;
+        singlePoint.Waga = items[i].weight
+        result.push(singlePoint);
+      }
+    }
+    return result;
   }
 
   useEffect(function () {
     const getData = async() => {
-      console.log(await filterData());
+      setDataToChart(await filterData());
+      setWeightChart(await filterWeightData());
     }
     getData();
+    // eslint-disable-next-line
   }, [dateRange]);
-
 
   if (!isLoaded || items.length === 0) {
     return (
@@ -84,21 +109,19 @@ export default function Details() {
             Ul numer: {hiveId}
           </Typography>
 
-          {/* <div className="section-tittle underline">
-            <h2>Szczególy ula nr {hiveId}</h2>
-          </div> */}
           <div>
             <Grid container spacing={2} direction="column" alignItems="center" sx={{ marginTop: '5px', marginBottom: '10px' }}>
 
-                <Typography sx={{ textTransform: 'uppercase', textAlign: 'center', marginTop: '.5rem', fontSize: '1.0rem', fontWeight: '400', color: 'black' }}>
-                  Wybierz przedział czasu 
+                <Typography component={'div'} sx={{ textTransform: 'uppercase', textAlign: 'center', marginTop: '.5rem', fontSize: '1.0rem', fontWeight: '400', color: 'black' }}>
+                  Wybierz przedział czasu :
                   <DateRangePicker
                   showOneCalendar
-                  format="yyyy-MM-dd HH:mm:ss"
-                  defaultValue={[new Date('2022-08-18 00:00:00'), new Date('2022-08-26 00:00:00')]}
-                  defaultCalendarValue={[new Date('2022-08-01 00:00:00'), new Date('2022-09-01 23:59:59')]}
+                  format="yyyy-MM-dd HH:mm"
+                  defaultValue={[new Date(moment().startOf('month').format('YYYY-MM-DD hh:mm')), new Date(moment().endOf('month').format('YYYY-MM-DD hh:mm'))]}
+                  defaultCalendarValue={[new Date(moment().startOf('month').format('YYYY-MM-DD hh:mm')), new Date(moment().endOf('month').format('YYYY-MM-DD hh:mm'))]}
                   onChange={(range) => setDateRange(range)}
                 />
+                
                 </Typography>
 
 
@@ -108,21 +131,14 @@ export default function Details() {
             <h2>Temperatura i wilgotność</h2>
           </div>
           <div>
-            <HiveChart />
+            <HiveChart data={dataToChart}/>
           </div>
           <div className="chart-tittle">
             <h2>Waga</h2>
           </div>
           <div>
-            <HiveChart />
+            <WeightChart data={weightChart}/>
           </div>
-          {/* <Box sx={{ flexGrow: 1}}>
-            <Grid container spacing={2} direction="column" alignItems="center">
-              <Grid item xs={12} sm={12} md={12} lg={12}>
-                <HiveChart/>
-              </Grid>
-            </Grid>
-          </Box> */}
         </section >
       </div >
     )
