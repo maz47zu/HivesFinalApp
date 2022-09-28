@@ -9,6 +9,15 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 const theme = createTheme({
   typography: {
     fontFamily: [
+      'Roboto', 
+      'sans-serif'
+    ].join(','),
+  },
+});
+
+const navTheme = createTheme({
+  typography: {
+    fontFamily: [
       'Chilanka',
       'cursive',
     ].join(','),
@@ -18,8 +27,10 @@ const theme = createTheme({
 function App() {
   return (
     <BrowserRouter>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={navTheme}>
         <Navbar />
+      </ThemeProvider>
+      <ThemeProvider theme={theme}>
         <Routes>
           <Route path={"/"} element={<Start />} />
           <Route path={"/settings"} element={<Settings />} />

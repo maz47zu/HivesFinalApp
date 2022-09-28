@@ -27,7 +27,7 @@ export default function InfoCard(props) {
                             <DeviceThermostatIcon />
                         </ListItemIcon>
                         <ListItemText>
-                            <Typography variant='body1'>Temperatura :</Typography>
+                            <Typography variant='body1' >Temperatura :</Typography>
                         </ListItemText>
                         <ListItemText>
                             <Typography variant='body1' align='right'>{props.hives?.temperature.toFixed(2) + '°C'}</Typography>
