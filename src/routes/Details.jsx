@@ -18,7 +18,7 @@ export default function Details() {
   const [items, setItems] = useState([]);
   const [dataToChart, setDataToChart] = useState([]);
   const [weightChart, setWeightChart] = useState([]);
-  const [dateRange, setDateRange] = useState([new Date(moment().startOf('month').format('YYYY-MM-DD hh:mm')), new Date((moment().endOf('month').format('YYYY-MM-DD hh:mm')))]);
+  const [dateRange, setDateRange] = useState([new Date(moment().startOf('year').format('YYYY-MM-DD hh:mm')), new Date((moment().endOf('month').format('YYYY-MM-DD hh:mm')))]);
   const location = useLocation();
   const { hiveId } = location.state;
 
@@ -33,6 +33,7 @@ export default function Details() {
           (result) => {
             setIsLoaded(true);
             setItems(result);
+            setDateRange([new Date(moment().startOf('year').format('YYYY-MM-DD hh:mm')), new Date((moment().endOf('month').format('YYYY-MM-DD hh:mm')))]);
           },
           (error) => {
             setIsLoaded(true);
@@ -44,7 +45,7 @@ export default function Details() {
   }, [setItems])
 
   async function filterData (){
-    const startDate = dateRange[0] ? moment(dateRange[0]) : (moment().startOf('month').format('YYYY-MM-DD hh:mm'));
+    const startDate = dateRange[0] ? moment(dateRange[0]) : (moment().startOf('year').format('YYYY-MM-DD hh:mm'));
     const endDate = dateRange[1] ? moment(dateRange[1]) : (moment().endOf('month').format('YYYY-MM-DD hh:mm'));
     let result = [];
     for(const i in items){
@@ -64,7 +65,7 @@ export default function Details() {
   }
 
   async function filterWeightData (){
-    const startDate = dateRange[0] ? moment(dateRange[0]) : (moment().startOf('month').format('YYYY-MM-DD hh:mm'));
+    const startDate = dateRange[0] ? moment(dateRange[0]) : (moment().startOf('year').format('YYYY-MM-DD hh:mm'));
     const endDate = dateRange[1] ? moment(dateRange[1]) : moment().endOf('month').format('YYYY-MM-DD hh:mm');
     let result = [];
     for(const i in items){
@@ -117,7 +118,8 @@ export default function Details() {
                   <DateRangePicker
                   showOneCalendar
                   format="yyyy-MM-dd HH:mm"
-                  defaultValue={[new Date(moment().startOf('month').format('YYYY-MM-DD hh:mm')), new Date(moment().endOf('month').format('YYYY-MM-DD hh:mm'))]}
+                  defaultValue={dateRange}
+                  // defaultValue={[new Date(moment().startOf('year').format('YYYY-MM-DD hh:mm')), new Date(moment().endOf('month').format('YYYY-MM-DD hh:mm'))]}
                   defaultCalendarValue={[new Date(moment().startOf('month').format('YYYY-MM-DD hh:mm')), new Date(moment().endOf('month').format('YYYY-MM-DD hh:mm'))]}
                   onChange={(range) => setDateRange(range)}
                 />
